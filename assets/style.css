@@ -1,0 +1,48 @@
+#head {
+    color: #8D1919;
+    font-family: Narkism;
+}
+#head2 {
+    color :#B20000;
+    font-family: Narkism;
+}
+.gold {
+    color: #B26B00;
+}
+.score {
+    color: #808080;
+}
+#gameLink {
+    text-align: center;
+    border: 1px solid gray;
+}
+#div1 {
+    width: 225px;
+}
+.font {
+    font-family: Narkism;
+}
+.headO {
+    font-family: Narkism;
+    width: 300px;
+}
+p {
+    font-family: Narkism;
+    font-size: 20px;
+}
+#greeting {
+    position: absolute;
+    left: 40%;
+    top: 40%;
+    background: #fff;
+    width: 350px;
+    height: 450px;
+    border: 2px solid gray;
+    border-radius: 5px;
+    padding: 20px;
+    display: none;
+}
+li{
+    font-family: Narkism;
+    font-size: 18px;
+}

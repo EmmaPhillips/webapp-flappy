@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Flappy Bird</title>
+    <link rel="stylesheet" href="../assets/style.css"/>
+    <link rel="stylesheet" href="../lib/bootstrap.css"/>
+</head>
+
+<body>
+<div class="container">
+    <div class = "jumbotron">
+        <h1 id = "head">Emma's Flappy Bird.</h1>
+        <h3 id = "head2">Press space to jump</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div id="game"> </div>
+        </div>
+        <div class="col-md-4">
+            <br>
+            <br>
+            <p>The highest scorers are:</p>
+            <ul id="scoreBoard">
+            </ul>
+        </div>
+    </div>
+</div>
+<div id="greeting">
+    <h1 class = "headO">
+        Game over
+    </h1>
+    <h3 class = "headO">
+        Save Your Score?
+    </h3>
+    <br>
+    <form id="greeting-form" class="headO" method = "post" action = "/score">
+        <div class="form-group">
+            <label for="fullName">What's your name?</label>
+            <br>
+            <input type="text" id="fullName"
+                   name="fullName" class="form-control" placeholder="Your name here..." required>
+        </div>
+        <br>
+        <br>
+        <div class="form-group">
+            <label for="email">What's your email address?</label>
+            <br>
+            <input type="text" id="email"
+                   name="email" class="form-control" placeholder="Your email addess here...">
+
+            <input type="hidden" id="score" name="score" value="0">
+        </div>
+        <br>
+        <br>
+        <button class="btn btn-default" type="submit">Submit</button>
+    </form>
+
+</div>
+<script src="../lib/jquery.js"></script>
+<script type="text/javascript" src="../lib/phaser.min.js"></script>
+<script type="text/javascript" src="../js/flappy.js"></script>
+</body>
+
+</html>
