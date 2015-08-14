@@ -35,8 +35,9 @@ var beginning = false;
 var playerSize = 1;
 var min = 1;
 var max = 12;
-var pipeGreen;
-var pipeYellow;
+var gameMode;
+var pipeMint;
+var pipeOrange;
 var pipeRed;
 var textEasy;
 var textMedium;
@@ -84,75 +85,77 @@ function preload() {
 
 }
 
-function easy(sprite, pointer){
-    pipeGreen.scale.setTo(1.2, 1.2);
+function slow(sprite, pointer){
+    pipeMint.scale.setTo(1.2, 1.2);
     pipeRed.scale.setTo(1, 1);
-    pipeYellow.scale.setTo(1, 1);
+    pipeOrange.scale.setTo(1, 1);
     textEasy.visible = true;
     textHard.visible = false;
     textMedium.visible = false;
-    dificulty = 1;
+    gameMode = 3;
     pipeColour = "pipe_m";
     pipeEndColour = "pipeEnd_m";
     gameSpeed = 125;
     pipeInterval = 2.25;
     jumpPower = 175
 }
-function medium(sprite, pointer){
-    pipeGreen.scale.setTo(1, 1);
+function average(sprite, pointer){
+    pipeMint.scale.setTo(1, 1);
     pipeRed.scale.setTo(1, 1);
-    pipeYellow.scale.setTo(1.2, 1.2);
+    pipeOrange.scale.setTo(1.2, 1.2);
     textEasy.visible = false;
     textHard.visible = false;
     textMedium.visible = true;
-    dificulty = 2;
+    gameMode = 2;
     pipeColour = "pipe_o";
     pipeEndColour = "pipeEnd_o";
     gameSpeed = 200;
     pipeInterval = 1.75;
+    jumpPower = 200
 }
-function hard(sprite, pointer){
-    pipeGreen.scale.setTo(1, 1);
+function fast(sprite, pointer){
+    pipeMint.scale.setTo(1, 1);
     pipeRed.scale.setTo(1.2, 1.2);
-    pipeYellow.scale.setTo(1, 1);
+    pipeOrange.scale.setTo(1, 1);
     textEasy.visible = false;
     textHard.visible = true;
     textMedium.visible = false;
-    dificulty = 3;
+    gameMode = 1;
     pipeColour = "pipe_r";
     pipeEndColour = "pipeEnd_r";
     gameSpeed = 275;
     pipeInterval = 1.25;
+    jumpPower = 225
 }
 
 
-function chooseDificulty(){
+function chooseGamemode(){
     welcome.destroy();
-    welcome2 = game.add.text(180, 130, "Please choose your difficulty:",{
+    welcome2 = game.add.text(180, 130, "Please choose your game mode:",{
         font: "30px Narkism", fill: "#CC0000"
     });
     pipeRed.visible = true;
-    pipeYellow.visible = true;
-    pipeGreen.visible = true;
-    textEasy.visible = true;
+    pipeOrange.visible = true;
+    pipeMint.visible = true;
+    textMedium.visible = true;
     pipeRed.anchor.setTo(0.5, 0.5);
-    pipeYellow.anchor.setTo(0.5, 0.5);
-    pipeGreen.anchor.setTo(0.5, 0.5);
-    pipeGreen.scale.setTo(1.2, 1.2);
-    easy();
+    pipeOrange.anchor.setTo(0.5, 0.5);
+    pipeMint.anchor.setTo(0.5, 0.5);
+    pipeOrange.scale.setTo(1.2, 1.2);
+    average();
 
-    pipeGreen.inputEnabled = true;
-    pipeGreen.events.onInputDown.add(easy, this);
+    pipeMint.inputEnabled = true;
+    pipeMint.events.onInputDown.add(slow, this);
 
-    pipeYellow.inputEnabled = true;
-    pipeYellow.events.onInputDown.add(medium, this);
+    pipeOrange.inputEnabled = true;
+    pipeOrange.events.onInputDown.add(average, this);
 
     pipeRed.inputEnabled = true;
-    pipeRed.events.onInputDown.add(hard, this);
+    pipeRed.events.onInputDown.add(fast, this);
 
 
 
-    game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onDown.remove(chooseDificulty);
+    game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onDown.remove(chooseGamemode);
     game.input.keyboard.addKey(Phaser.Keyboard.ENTER).onDown.add(begin);
 }
 
@@ -167,8 +170,8 @@ function begin(event){
     pb4.kill();
     pb5.kill();
     pb6.kill();
-    pipeGreen.kill();
-    pipeYellow.kill();
+    pipeMint.kill();
+    pipeOrange.kill();
     pipeRed.kill();
     textEasy.destroy();
     textMedium.destroy();
@@ -190,7 +193,7 @@ function generateBalloons(){
     var bonus = game.add.sprite(width, height, "balloons");
     balloons.push(bonus);
     game.physics.arcade.enable(bonus);
-    bonus.body.velocity.x = - gameSpeed;
+    bonus.body.velocity.x = - gameSpeed * gameMode / 2;
     bonus.body.velocity.y = - game.rnd.integerInRange(60,100);
 }
 
@@ -198,7 +201,7 @@ function generateWeight(){
     var bonus = game.add.sprite(width, 0, "weight");
     weight.push(bonus);
     game.physics.arcade.enable(bonus);
-    bonus.body.velocity.x = - gameSpeed;
+    bonus.body.velocity.x = - gameSpeed * (gameMode / 2);
     bonus.body.velocity.y = game.rnd.integerInRange(60,100);
 }
 
@@ -282,7 +285,7 @@ function addPipeEnd(x, y){
 
 function create() {
     game.stage.setBackgroundColor("#398990");
-    var bgVelocity = gameSpeed/10
+    var bgVelocity = gameSpeed/10;
     var bgSprite = game.add.tileSprite(0, 0, width, height, "background");
     bgSprite.autoScroll(-bgVelocity,0);
 
@@ -290,15 +293,15 @@ function create() {
         font: "30px Narkism", fill: "#CC0000"
     });
 
-    textEasy = game.add.text(182, 220, "Easy",{
+    textEasy = game.add.text(182, 220, "Slow",{
         font: "20px Narkism", fill: "#000000"
     });
     textEasy.visible = false;
-    textHard = game.add.text(530, 220, "Hard",{
+    textHard = game.add.text(530, 220, "Fast",{
         font: "20px Narkism", fill: "#000000"
     });
     textHard.visible = false;
-    textMedium = game.add.text(345, 220, "Medium",{
+    textMedium = game.add.text(345, 220, "Average",{
         font: "20px Narkism", fill: "#000000"
     });
     textMedium.visible = false;
@@ -311,17 +314,17 @@ function create() {
     pb4 = game.add.sprite(102, 70, "sImg2");
     pb5 = game.add.sprite(102, 20, "sImg2");
     pb6 = game.add.sprite(102, -30, "sImg2");
-    pipeGreen = game.add.sprite(200, 300, "pipe_m");
-    pipeGreen.visible = false;
+    pipeMint = game.add.sprite(200, 300, "pipe_m");
+    pipeMint.visible = false;
     pipeRed = game.add.sprite(550, 300, "pipe_r");
     pipeRed.visible = false;
-    pipeYellow = game.add.sprite(375, 300, "pipe_o");
-    pipeYellow.visible = false;
+    pipeOrange = game.add.sprite(375, 300, "pipe_o");
+    pipeOrange.visible = false;
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     game.input.keyboard
         .addKey(Phaser.Keyboard.ENTER)
-        .onDown.add(chooseDificulty);
+        .onDown.add(chooseGamemode);
 
     game.input.keyboard
         .addKey(Phaser.Keyboard.SPACEBAR)
@@ -415,6 +418,8 @@ function changeScore() {
     score++;
     labelScore.setText(score.toString());
 }
+
+
 
 $.get("/score", function(scores){
     scores.sort(function (scoreA, scoreB){
